@@ -91,14 +91,14 @@ void EDF_TaskC(void*) {
 }
 
 
-int main(void) {
+int ______main(void) {
 	HAL_Init();
 	SystemClock_Config();
 	MX_GPIO_Init();
 	MX_USART2_UART_Init();
 	/* MCU Configuration is now complete. Start writing your code below this line */
 	printf("\e[1;1H\e[2J\r\n\r\n\r\n");
-	printf("-------New----------\r\n");
+	printf("-------New---------- Group 11\r\n");
 
 	osKernelInit();
 
