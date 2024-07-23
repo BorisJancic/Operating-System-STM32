@@ -1,0 +1,13 @@
+../Core/Src/lab_1_main_jkl_1.c:142:5:main___	144	static
+../Core/Src/lab_1_main_jkl_1.c:346:13:print_score_so_far	24	static
+../Core/Src/lab_1_main_jkl_1.c:357:13:test_function_manager	72	static
+../Core/Src/lab_1_main_jkl_1.c:435:13:sanity	16	static
+../Core/Src/lab_1_main_jkl_1.c:442:13:stack_reuse	16	static
+../Core/Src/lab_1_main_jkl_1.c:450:13:eternalprintf	24	static
+../Core/Src/lab_1_main_jkl_1.c:465:13:odds_are_stacked_against_you	288	static
+../Core/Src/lab_1_main_jkl_1.c:486:13:i_prefer_latches	56	static
+../Core/Src/lab_1_main_jkl_1.c:524:13:reincarnation	56	static
+../Core/Src/lab_1_main_jkl_1.c:556:13:insanity_helper	24	static
+../Core/Src/lab_1_main_jkl_1.c:569:13:insanity	64	static
+../Core/Src/lab_1_main_jkl_1.c:595:13:greedy	104	static
+../Core/Src/lab_1_main_jkl_1.c:634:13:task_wrapper_test	16	static

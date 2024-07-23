@@ -1,0 +1,6 @@
+../Core/Src/k_mem.c:17:6:print_free_list	6
+../Core/Src/k_mem.c:40:5:k_mem_init	6
+../Core/Src/k_mem.c:74:7:k_mem_alloc	1
+../Core/Src/k_mem.c:83:7:k_mem_alloc_SVC	14
+../Core/Src/k_mem.c:147:5:k_mem_dealloc	16
+../Core/Src/k_mem.c:204:5:k_mem_count_extfrag	5

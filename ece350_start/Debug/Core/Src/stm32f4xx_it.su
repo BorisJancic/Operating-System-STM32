@@ -1,0 +1,8 @@
+../Core/Src/stm32f4xx_it.c:80:6:NMI_Handler	8	static
+../Core/Src/stm32f4xx_it.c:94:6:HardFault_Handler	8	static
+../Core/Src/stm32f4xx_it.c:107:6:MemManage_Handler	8	static
+../Core/Src/stm32f4xx_it.c:120:6:BusFault_Handler	8	static
+../Core/Src/stm32f4xx_it.c:133:6:UsageFault_Handler	8	static
+../Core/Src/stm32f4xx_it.c:150:13:SVC_Handler_Main	56	static,ignoring_inline_asm
+../Core/Src/stm32f4xx_it.c:267:6:DebugMon_Handler	8	static
+../Core/Src/stm32f4xx_it.c:294:6:SysTick_Handler	24	static,ignoring_inline_asm

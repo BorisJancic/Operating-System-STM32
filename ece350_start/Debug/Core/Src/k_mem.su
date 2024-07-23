@@ -1,0 +1,6 @@
+../Core/Src/k_mem.c:17:6:print_free_list	24	static
+../Core/Src/k_mem.c:40:5:k_mem_init	24	static
+../Core/Src/k_mem.c:74:7:k_mem_alloc	24	static,ignoring_inline_asm
+../Core/Src/k_mem.c:83:7:k_mem_alloc_SVC	32	static
+../Core/Src/k_mem.c:147:5:k_mem_dealloc	48	static
+../Core/Src/k_mem.c:204:5:k_mem_count_extfrag	32	static
