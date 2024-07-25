@@ -65,7 +65,7 @@ void osKernelInit(void) {
     TCB null_task = { .ptask = NULL_TASK, .stack_size = 0x200 };
     osCreateDeadlineTask(INT_MAX, &null_task);
 
-    printf(_SUCCESS_ "osKernelInit()\r\n");
+//    printf(_SUCCESS_ "osKernelInit()\r\n");
 }
 
 int osCreateTask(TCB* p_new_task) { return osCreateDeadlineTask(5, p_new_task); }
@@ -77,7 +77,7 @@ int osCreateDeadlineTask(int deadline, TCB* p_new_task) {
 	p_task->SVC.CREATE_TASK_args.p_new_task = p_new_task;
 	__SVC(SVC_CREATE_TASK);
 
-    printf(_SUCCESS_ "osCreateTask()\r\n");
+//    printf(_SUCCESS_ "osCreateTask()\r\n");
 	return p_task->SVC.CREATE_TASK_status;
 }
 
@@ -173,7 +173,7 @@ int osKernelStart(void) {
 
 	osScheduler();
 	kernel_running = 1;
-    printf(_SUCCESS_ "osKernelStart()\r\n");
+//    printf(_SUCCESS_ "osKernelStart()\r\n");
 }
 
 int osTaskInfo(task_t TID, TCB* p_task_copy) {
