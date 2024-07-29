@@ -181,19 +181,12 @@ extern void SVC_Handler_Main(unsigned int* svc_args) {
 			size_t size = p_task->SVC.MALLOC_size;
 			p_task->SVC.MALLOC_p_buf = (void*)k_mem_alloc_SVC(size);
 			break;
-
+		case SVC_FREE:
+			p_task = &tcb_array[osGetTID()];
+	    	void* p_mem = p_task->SVC.FREE_p_mem;
+	    	p_task->SVC.FREE_status = (int)k_mem_dealloc_SVC(p_mem);
+			break;
 		case SVC_YIELD:
-//			if (running_task_index < 0) { break; }
-//
-//			p_task = &tcb_array[osGetTID()];
-//			p_task->state = READY;
-//			p_task->current_deadline = p_task->initial_deadline;
-//
-//			last_running_task_index = running_task_index;
-//			running_task_index = -1;
-//
-//			SCB->ICSR |= 1<<28;
-//			__asm("ISB");
 			osYield_SVC();
 			break;
 
@@ -206,7 +199,7 @@ extern void SVC_Handler_Main(unsigned int* svc_args) {
 			) { break; }
 
 			void* p_mem_block = (void*)((uint32_t)p_task->p_chunk + (uint32_t)sizeof(Block_Header));
-			if (k_mem_dealloc(p_mem_block) == RTX_ERR) { break; }
+			if (k_mem_dealloc_SVC(p_mem_block) == RTX_ERR) { break; }
 
 			p_task->state = DORMANT;
 
@@ -299,35 +292,31 @@ void SysTick_Handler(void) {
 	if (!kernel_running) { return; }
 
 	TCB* p_task = NULL;
-	TCB* p_current_task = &tcb_array[osGetTID()];
+	int TID = osGetTID();
+	TCB* p_current_task = &tcb_array[TID];
 	int trigger = 0;
-//	if (count % 1000 == 0 || 1) {
-		for (int i = 1; i < MAX_TASKS; i++) {
-			p_task = &tcb_array[i];
-//			if (i == 2 && p_task->state != DORMANT) {
-//				printf("%d\r\n", p_task->current_deadline);
-//			}
-			if (--p_task->current_deadline == 0) {
-				p_task->current_deadline = p_task->initial_deadline;
+	if (TID == 0) { trigger = 1; }
 
-				if (p_task->state == RUNNING) {
-					trigger = 1;
-				} else if (p_task->state == READY) {
-					// Ask Maran, should we trigger
-				} else if (p_task->state == SLEEPING) {
-					p_task->state = READY; // Ask Maran, should it be in the scheduler
-					if (p_task->current_deadline <= p_current_task->current_deadline) {
-						trigger = 1; // Ask Maran, what happens if deadline was 0 and got reset?
-					}
+	for (int i = 1; i < MAX_TASKS; i++) {
+		p_task = &tcb_array[i];
+		if (p_task->state == DORMANT) { continue; }
+
+		if (--p_task->current_deadline == 0) {
+			p_task->current_deadline = p_task->initial_deadline;
+
+			if (p_task->state == RUNNING) {
+				trigger = 1;
+			} else if (p_task->state == READY) {
+				// Ask Maran, should we trigger
+			} else if (p_task->state == SLEEPING) {
+				p_task->state = READY; // Ask Maran, should it be in the scheduler
+				if (p_task->current_deadline <= p_current_task->current_deadline) {
+					trigger = 1; // Ask Maran, what happens if deadline was 0 and got reset?
 				}
 			}
 		}
-//	}
+	}
 
-//	if (--count == 0) {
-//		printf("Second Elapsed\r\n");
-//		count = 1000;
-//	}
 
 	if (trigger) {
 		p_current_task->state = READY;

@@ -53,6 +53,9 @@ typedef struct task_control_block {
     	int SET_DEADLINE_status;
 
     	char* PRINTF_p_str;
+
+    	void* FREE_p_mem;
+    	int FREE_status;
     } SVC;
 
 

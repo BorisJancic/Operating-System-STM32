@@ -62,8 +62,8 @@ void osKernelInit(void) {
     	return;
     }
 
-    TCB null_task = { .ptask = NULL_TASK, .stack_size = 0x200 };
-    osCreateDeadlineTask(INT_MAX, &null_task);
+    TCB null_task = { .ptask = NULL_TASK, .stack_size = STACK_SIZE };
+    osCreateDeadlineTask_SVC(INT_MAX, &null_task);
 
 //    printf(_SUCCESS_ "osKernelInit()\r\n");
 }
@@ -134,6 +134,7 @@ int osCreateDeadlineTask_SVC(int deadline, TCB* p_new_task) {
 
 	int current_task = osGetTID();
 	TCB* p_current_task = &tcb_array[current_task];
+//	printf(_SUCCESS_ "TC\r\n");
 
 	if (
 			kernel_running &&
@@ -169,11 +170,6 @@ int osKernelStart(void) {
 
 	__SVC(SVC_CONTEXT_INIT);
 	return RTX_OK;
-
-
-	osScheduler();
-	kernel_running = 1;
-//    printf(_SUCCESS_ "osKernelStart()\r\n");
 }
 
 int osTaskInfo(task_t TID, TCB* p_task_copy) {
@@ -230,6 +226,7 @@ void osYield_SVC(void) {
 int osTaskExit(void) {
 	__SVC(SVC_TASK_EXIT);
 
+//	printf(_FAILURE_ "x\r\n");
 	return RTX_ERR; // always errors on return
 }
 

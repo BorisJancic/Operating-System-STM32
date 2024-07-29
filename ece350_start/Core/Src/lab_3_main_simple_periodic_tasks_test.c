@@ -49,6 +49,10 @@ int B_arr_before[10];
 
 void EDF_TaskC(void*);
 void EDF_TaskA(void*) {
+	while (1) {
+		SVC_printf("Task A\r\n");
+		osPeriodYield();
+	}
 	for (int i = 0; i < 10; i++) {
 		A_arr[i] = ARM_CM_DWT_CYCCNT;
 		osPeriodYield();
@@ -60,6 +64,10 @@ void EDF_TaskA(void*) {
 //	osCreateDeadlineTask(1000, &st_mytask);
 }
 void EDF_TaskB(void*) {
+	while (1) {
+		SVC_printf("Task B\r\n");
+		osPeriodYield();
+	}
 	for (int i = 0; i < 10; i++) {
 		B_arr_before[i] = ARM_CM_DWT_CYCCNT;
 		for (int j = 0; j < 55000; j++) {}
@@ -91,7 +99,7 @@ void EDF_TaskC(void*) {
 }
 
 
-int ______main(void) {
+int ________main(void) {
 	HAL_Init();
 	SystemClock_Config();
 	MX_GPIO_Init();

@@ -68,6 +68,8 @@ int k_mem_init() {
 	}
 
 	kernel_mem_init = 1;
+
+//	printf(_SUCCESS_ "k_mem_init()\r\n");
 	return RTX_OK;
 }
 
@@ -133,7 +135,7 @@ void* k_mem_alloc_SVC(size_t size) {
 		free_list[i] = p_new_header;
 	}
 	p_header->free = 0;
-	p_header->TID = osGetTID();
+	p_header->TID = osGetTID(); // does this fail on osTaskExit();
 	p_header->free_list_index = i;
 	p_header->magic_num = MAGIC_NUM;
 	p_header->full_size = chunk_size;
@@ -145,6 +147,15 @@ void* k_mem_alloc_SVC(size_t size) {
 }
 
 int k_mem_dealloc(void* p_mem) {
+	TCB* p_task = &tcb_array[osGetTID()];
+
+	p_task->SVC.FREE_p_mem = p_mem;
+	__SVC(SVC_FREE);
+
+	return p_task->SVC.FREE_status;
+}
+
+int k_mem_dealloc_SVC(void* p_mem) {
 	if (
 			!kernel_mem_init ||
 			!p_mem ||
