@@ -76,16 +76,10 @@ void f_recursive_task(void* args) {
 		printf("Task %d State: %d at %p, p_stack %p\r\n", i, tcb_array[i].state, &tcb_array[i], tcb_array[i].p_stack);
 	}
 
-//	printf("Recursion\r\n");
 	osTaskExit();
 }
 void f_task_1(void* args) {
 	printf("task 1\r\n");
-//	int i = 0;
-//	while (1) {
-//		SVC_printf("1\r\n");
-////		osYield();
-//	}
 	while (1) {
 		osYield();
 	}
@@ -93,10 +87,6 @@ void f_task_1(void* args) {
 }
 void f_task_2(void* args) {
 	printf("task 2\r\n");
-//	while (1) {
-//		SVC_printf("2\r\n");
-////		osYield();
-//	}
 	while (1) {
 		osYield();
 	}
@@ -104,10 +94,6 @@ void f_task_2(void* args) {
 }
 void f_task_3(void* args) {
 	printf("task 3\r\n");
-//	while (1) {
-//		SVC_printf("3\r\n");
-////		osYield();
-//	}
 	while (1) {
 		osYield();
 	}
@@ -115,14 +101,35 @@ void f_task_3(void* args) {
 }
 void f_task_4(void* args) {
 	printf("task 4\r\n");
-//	while (1) {
-//		SVC_printf("4\r\n");
-////		osYield();
-//	}
 	while (1) {
 		osYield();
 	}
 	osTaskExit();
+}
+
+//3 tasks of same deadline of 4 and task b changes deadline of task c to be 2 ms
+//osPeriod yeild after every loop
+void f_task_A(void* args) {
+	for (int i = 0; i < 5; i++) {
+		printf("A\r\n");
+		osPeriodYield();
+	}
+}
+void f_task_B(void* args) {
+	for (int i = 0; i < 5; i++) {
+		if (i == 2) {
+			printf("set C 2ms\r\n");
+			osSetDeadline(2, 3);
+		}
+		printf("B\r\n");
+		osPeriodYield();
+	}
+}
+void f_task_C(void* args) {
+	for (int i = 0; i < 8; i++) {
+		printf("C\r\n");
+		osPeriodYield();
+	}
 }
 
 void Set_Up_Thread_Stack_and_Context(void (*p_func)(void)) {
@@ -148,7 +155,7 @@ int count = 0;
 //#define __SVC(num) __asm("SVC #" STR(num))
 
 
-int ___________main(void) {
+int _________main(void) {
 	/* MCU Configuration: Don't change this or the whole chip won't work!*/
 	/* Reset of all peripherals, Initializes the Flash interface and the Systick. */
 	HAL_Init();
@@ -163,19 +170,27 @@ int ___________main(void) {
 
 	osKernelInit();
 
-	TCB task_1 = { .ptask = f_task_1, .stack_size = 0x400 };
-	TCB task_2 = { .ptask = f_task_2, .stack_size = 0x400 };
-	TCB task_3 = { .ptask = f_task_3, .stack_size = 0x400 };
-	TCB task_4 = { .ptask = f_task_4, .stack_size = 0x400 };
+//	TCB task_1 = { .ptask = f_task_1, .stack_size = 0x400 };
+//	TCB task_2 = { .ptask = f_task_2, .stack_size = 0x400 };
+//	TCB task_3 = { .ptask = f_task_3, .stack_size = 0x400 };
+//	TCB task_4 = { .ptask = f_task_4, .stack_size = 0x400 };
 
 //	TCB task_4 = { .ptask = f_recursive_task, .stack_size = 0x400 };
 //	TCB task_5 = { .ptask = f_recursive_task, .stack_size = 0x400 };
 
+	TCB task_A = { .ptask = f_task_A, .stack_size = 0x400 };
+	TCB task_B = { .ptask = f_task_B, .stack_size = 0x400 };
+	TCB task_C = { .ptask = f_task_C, .stack_size = 0x400 };
 
-	osCreateDeadlineTask(30, &task_1);
-	osCreateDeadlineTask(50, &task_2);
-	osCreateDeadlineTask(10, &task_3);
-	osCreateDeadlineTask(5, &task_4);
+	osCreateDeadlineTask(4, &task_A);
+	osCreateDeadlineTask(4, &task_B);
+	osCreateDeadlineTask(4, &task_C);
+
+
+//	osCreateDeadlineTask(30, &task_1);
+//	osCreateDeadlineTask(50, &task_2);
+//	osCreateDeadlineTask(10, &task_3);
+//	osCreateDeadlineTask(5, &task_4);
 //	osCreateTask(&task_5);
 //
 	osKernelStart();

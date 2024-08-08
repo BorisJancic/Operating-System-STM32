@@ -307,6 +307,9 @@ int osSetDeadline_SVC(int deadline, task_t TID) {
 	p_curr_task->SVC.SET_DEADLINE_status = RTX_OK;
 	if (deadline <= p_curr_task->current_deadline) {
 		p_curr_task->state = READY;
+		last_running_task_index = running_task_index;
+		running_task_index = -1;
+
 		SCB->ICSR |= 1<<28;
 		__asm("ISB");
 	}
