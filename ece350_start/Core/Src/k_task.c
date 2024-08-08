@@ -15,7 +15,7 @@ int running_task_index = -1;
 int last_running_task_index = -1;
 
 void NULL_TASK(void* args) {
-	printf("0\r\n");
+//	printf("0\r\n");
 //	SVC_printf(_NEUTRAL_ "NULL_TASK()\r\n");
 	while (1) {
 //		printf(_NEUTRAL_ "NULL_TASK()\r\n");
