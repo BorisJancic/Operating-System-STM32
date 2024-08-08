@@ -15,7 +15,7 @@ int running_task_index = -1;
 int last_running_task_index = -1;
 
 void NULL_TASK(void* args) {
-	//printf("0\r\n");
+	printf("0\r\n");
 //	SVC_printf(_NEUTRAL_ "NULL_TASK()\r\n");
 	while (1) {
 //		printf(_NEUTRAL_ "NULL_TASK()\r\n");
@@ -83,12 +83,12 @@ int osCreateDeadlineTask(int deadline, TCB* p_new_task) {
 
 int osCreateDeadlineTask_SVC(int deadline, TCB* p_new_task) {
 	if (
-			deadline <= 0 ||
-			!p_new_task ||
-			p_new_task->stack_size < STACK_SIZE ||
-			!p_new_task->ptask ||
-			task_count >= MAX_TASKS ||
-			!kernel_init
+		deadline <= 0 ||
+		!p_new_task ||
+		p_new_task->stack_size < STACK_SIZE ||
+		!p_new_task->ptask ||
+		task_count >= MAX_TASKS ||
+		!kernel_init
 	) { return RTX_ERR; }
 
 	int i = 0;
@@ -160,12 +160,22 @@ int osKernelStart(void) {
 		p_task = &tcb_array[0];
 		return RTX_ERR;
 	}
+	int index = 1;
+	for (int i = 2; i < MAX_TASKS; i++) {
+		if (
+				tcb_array[i].state == READY &&
+				tcb_array[i].current_deadline < p_task->current_deadline)
+		{
+			p_task = &tcb_array[i];
+			index = i;
+		}
+	}
 
 	__set_PSP((int)p_task->p_stack);
 	p_task->state = RUNNING;
 
-	last_running_task_index = 1;
-	running_task_index = 1;
+	last_running_task_index = index;
+	running_task_index = index;
 	kernel_running = 1;
 
 	__SVC(SVC_CONTEXT_INIT);

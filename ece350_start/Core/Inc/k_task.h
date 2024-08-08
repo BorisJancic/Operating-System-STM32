@@ -26,11 +26,12 @@ typedef unsigned int task_t;
 typedef struct task_control_block {
 	void (*ptask)(void* args); //entry address
 	U32 stack_high; //starting address of stack (high address)
-	uint32_t* p_chunk;
 	task_t tid; //task ID
 	U8 state; //task's state
 	U16 stack_size; //max stack size. Must be a multiple of 8
 	//your own fields at the end
+	uint32_t* p_chunk;
+
 	int initial_deadline;
 	int current_deadline;
 

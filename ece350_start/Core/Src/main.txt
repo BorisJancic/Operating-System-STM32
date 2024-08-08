@@ -80,24 +80,47 @@ void f_recursive_task(void* args) {
 	osTaskExit();
 }
 void f_task_1(void* args) {
-	int i = 0;
+	printf("task 1\r\n");
+//	int i = 0;
+//	while (1) {
+//		SVC_printf("1\r\n");
+////		osYield();
+//	}
 	while (1) {
-		SVC_printf("1\r\n");
-//		osYield();
+		osYield();
 	}
 	osTaskExit();
 }
 void f_task_2(void* args) {
+	printf("task 2\r\n");
+//	while (1) {
+//		SVC_printf("2\r\n");
+////		osYield();
+//	}
 	while (1) {
-		SVC_printf("2\r\n");
-//		osYield();
+		osYield();
 	}
 	osTaskExit();
 }
 void f_task_3(void* args) {
+	printf("task 3\r\n");
+//	while (1) {
+//		SVC_printf("3\r\n");
+////		osYield();
+//	}
 	while (1) {
-		SVC_printf("3\r\n");
-//		osYield();
+		osYield();
+	}
+	osTaskExit();
+}
+void f_task_4(void* args) {
+	printf("task 4\r\n");
+//	while (1) {
+//		SVC_printf("4\r\n");
+////		osYield();
+//	}
+	while (1) {
+		osYield();
 	}
 	osTaskExit();
 }
@@ -125,7 +148,7 @@ int count = 0;
 //#define __SVC(num) __asm("SVC #" STR(num))
 
 
-int __main______(void) {
+int ___________main(void) {
 	/* MCU Configuration: Don't change this or the whole chip won't work!*/
 	/* Reset of all peripherals, Initializes the Flash interface and the Systick. */
 	HAL_Init();
@@ -143,14 +166,16 @@ int __main______(void) {
 	TCB task_1 = { .ptask = f_task_1, .stack_size = 0x400 };
 	TCB task_2 = { .ptask = f_task_2, .stack_size = 0x400 };
 	TCB task_3 = { .ptask = f_task_3, .stack_size = 0x400 };
+	TCB task_4 = { .ptask = f_task_4, .stack_size = 0x400 };
+
 //	TCB task_4 = { .ptask = f_recursive_task, .stack_size = 0x400 };
 //	TCB task_5 = { .ptask = f_recursive_task, .stack_size = 0x400 };
 
 
-	osCreateTask(&task_1);
-	osCreateTask(&task_2);
-	osCreateTask(&task_3);
-//	osCreateTask(&task_4);
+	osCreateDeadlineTask(30, &task_1);
+	osCreateDeadlineTask(50, &task_2);
+	osCreateDeadlineTask(10, &task_3);
+	osCreateDeadlineTask(5, &task_4);
 //	osCreateTask(&task_5);
 //
 	osKernelStart();
