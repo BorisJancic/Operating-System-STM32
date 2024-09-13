@@ -26,9 +26,9 @@ void* k_mem_alloc(size_t size);
 int k_mem_dealloc(void* p_mem);  
 
 ### Task Scheduling
-int osCreateTask(TCB* task);
-int osCreateDeadlineTask(int deadline, TCB* task);
-void osYield(void);
-void osSleep(int timeInMs);
-void osPeriodYield(void);
-int osSetDeadline(int deadline, task_t TID);
+int osCreateTask(TCB* task);  
+int osCreateDeadlineTask(int deadline, TCB* task);  
+void osYield(void);  
+void osSleep(int timeInMs);  
+void osPeriodYield(void);  
+int osSetDeadline(int deadline, task_t TID);  
