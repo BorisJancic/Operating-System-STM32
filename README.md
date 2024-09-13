@@ -15,7 +15,7 @@ Received a bonus for accommodating non-power-of-2 heap sizes.
 
 ## Lab 3: EDF Scheduling
 Earliest deadline first scheduling driven by a timer interrupt.  
-All critical OS functions like sleep() and malloc() are protected via system calls to protect against race conditions.  
+All critical OS functions like sleep() and malloc() are protected via system calls to prevent race conditions.  
 
 ---
 
