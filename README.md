@@ -3,7 +3,7 @@
 
 ---
 
-## Lab 1: Context Switching
+## Lab 1: Context Switching, Cooperative Multitasking
 Allows for tasks to be scheduled by the operating system and to be interleaved between each other.  
 A simple round-robin scheduler is used.  
 On switch, current registers are pushed to the stack, a new task is selected, and new registers are popped.  
@@ -13,7 +13,7 @@ Implementation of malloc() and free() (like new and delete) using [binary buddy 
 Allows for log(n) time complexity.  
 Received a bonus for accommodating non-power-of-2 heap sizes.  
 
-## Lab 3: EDF Scheduling
+## Lab 3: EDF Scheduling, Preemptive Multitasking
 Earliest deadline first scheduling driven by a timer interrupt.  
 All critical OS functions like sleep() and malloc() are protected via system calls to prevent race conditions.  
 
